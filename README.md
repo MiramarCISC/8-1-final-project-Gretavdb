@@ -92,36 +92,44 @@ Students may keep the project structure, Makefile, GitHub Actions workflow, and 
 
 Before submitting your final project, update this README.md so it describes your own project.
 
+-Project Title: 
+Plant Watering Log
+
+-Project Description: 
+The Plant Watering Log allows the user to add, searcj, water, remove, and count plants they want to log. It also lets the user see which plants need water and which plant are long overdue. The program uses structures, functions, pointers, linked lists, and file I/O to store and manage plant information.
+
+-This project complies with make, runs with ./main, and tests with make test.
+
 ```text
 ## Course Topics Integrated and Tested
 
 1. Week 1 Program Basics
-   - Code location:
-   - Test location:
+   - Code location: src/project.cpp - createPlant()
+   - Test location: tests/test_project.cpp - testWeek1ProgramBasics()
 
 2. Week 2 Decisions and Loops
-   - Code location:
-   - Test location:
+   - Code location: src/project.cpp - isValidDays(), isValidFrequency(), cretaPlant()
+   - Test location: tests/test_project.cpp - testWeek2decisionsAndLoops()
 
 3. Week 3 Functions and Program Design
-   - Code location:
-   - Test location:
+   - Code location: src/project.cpp - createPlant()
+   - Test location: tests/test_project.cpp - testWeek3Functions()
 
 4. Week 4 Arrays, Searching, and Sorting
-   - Code location:
-   - Test location:
+   - Code location: src/project.cpp - findPlants()
+   - Test location: tests/test_project.cpp - testWeek4Searching()
 
 5. Week 5 Strings and Structures
-   - Code location:
-   - Test location:
+   - Code location: include/project.hpp - Plant structure; src/project.cpp - createPlant()
+   - Test location: tests/test_project.cpp - testWeek5StringsandStructures()
 
 6. Week 6 Pointers, Dynamic Memory, and Linked Lists
-   - Code location:
-   - Test location:
+   - Code location: src/project.coo - insertPlant(), findPlant(), waterPlant(), removePlant(), countPlants(), clearPlants()
+   - Test location: tests/test_project.cpp - testWeek6LinkedList()
 
 7. Week 7 File I/O and Integration
-   - Code location:
-   - Test location:
+   - Code location: src/project.cpp - loadPlants(), savePlants(); src/main.cpp
+   - Test location: tests/test_project.cpp - testWeek7FileIO
 ```
 
 ## Final Submission Checklist

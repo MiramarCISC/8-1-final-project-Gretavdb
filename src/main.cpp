@@ -4,92 +4,182 @@
 using namespace std;
 
 int main() {
-    int choice = -1;
+    
+    PlantNode* head = nullptr;
+    int choice;
 
-    cout << "CISC 192 Final Project Sample" << endl;
-    cout << "Sample code is provided only as an example." << endl;
-    cout << "Delete or replace the sample code before final submission." << endl;
+    loadPlants("data/plants.txt", head);
 
     do {
-        printMenu();
+
+        cout << "PLANT WATERING LOG" << endl;
+        cout << "1. View All Plants" << endl;
+        cout << "2. Add Plant" << endl;
+        cout << "3. Search for Plant" << endl;
+        cout << "4. Water Plant" << endl;
+        cout << "5. Remove Plants" << endl;
+        cout << "6. Count Plants" << endl;
+        cout << "7. Show Plants Needing Water" << endl;
+        cout << "8. Show Most Overdue Plant" << endl;
+        cout << "9. Save Plant Log" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Enter your Choice: ";
         cin >> choice;
 
-        while (!isValidMenuChoice(choice)) {
-            cout << "Invalid choice. Enter 0-4: ";
-            cin >> choice;
-        }
-
         switch (choice) {
-            case 1: {
-                Student student("A123", "Alex");
-                student.getScoreList().addScore(90.0);
-                student.getScoreList().addScore(80.0);
-                student.getScoreList().addScore(100.0);
-                student.getScoreList().sortAscending();
 
-                printStudent(student);
-                cout << "Score 100 found at index "
-                     << student.getScoreList().findScore(100.0)
-                     << endl;
-
+            // View All Plants
+            case 1:
+                printPlants(head);
                 break;
-            }
 
             case 2: {
-                TaskList tasks;
-                tasks.insertFront(Task("study", 5));
-                tasks.insertFront(Task("project", 4));
-                tasks.markTaskComplete("study");
+                string name;
+                string species;
+                int days;
+                int frequency;
 
-                cout << "Task count: " << tasks.countTasks() << endl;
-                cout << "Removed completed tasks: "
-                     << tasks.removeCompletedTasks()
-                     << endl;
-                cout << "Remaining task count: " << tasks.countTasks() << endl;
+                cout << "Plant name: ";
+                cin >> name;
 
-                break;
-            }
+                cout << "Species: ";
+                cin >> species;
 
-            case 3: {
-                InventoryItem items[MAX_INVENTORY_ITEMS];
-                int count = InventoryReport::readInventoryFile(
-                    "data/inventory.txt",
-                    items,
-                    MAX_INVENTORY_ITEMS
-                );
+                cout << "Days since watered: ";
+                cin >> days;
 
-                cout << "Read " << count << " inventory item(s)." << endl;
-                cout << "Total inventory value: "
-                     << InventoryReport::calculateTotalInventoryValue(items, count)
-                     << endl;
+                cout << "Watering frequency: ";
+                cin >> frequency;
 
-                if (InventoryReport::writeInventoryReport(
-                        "inventory_report.txt",
-                        items,
-                        count
-                    )) {
-                    cout << "Report written to inventory_report.txt" << endl;
+                if (isValidDays(days) && isValidFrequency(frequency)) {
+                    Plant plant = createPlant(name, species, days, frequency);
+
+                    insertPlant(head, plant);
+
+                    cout << "Plant added!" << endl;
+                }
+                
+                else {
+                    cout << "Invalid plant information." << endl;
                 }
 
                 break;
             }
 
-            case 4:
-                cout << "Use this sample only as an example. "
-                     << "Delete or replace sample code before submission."
-                     << endl;
+            case 3: {
+                string name;
+
+                cout << "Plant name: ";
+                cin >> name;
+
+                PlantNode* plant = findPlant(head, name);
+
+                if (plant != nullptr)
+                    printPlant(plant->data);
+                else 
+                    cout << "Plant not found." << endl;
+
+                break;
+            }
+
+            case 4: {
+                string name;
+
+                cout << "Plant name: ";
+                cin >> name;
+
+                PlantNode* plant = findPlant(head, name);
+
+                if (plant != nullptr) {
+                    waterPlant(plant);
+                    cout << "Plant watered!" << endl;
+                }
+                else {
+                    cout << "Plant not found." << endl;
+                }
+
+                break;
+            }
+
+            case 5: {
+                string name;
+
+                cout << "Plant name: ";
+                cin>> name;
+
+                if (findPlant(head, name) != nullptr) {
+                    removePlant(head, name);
+                    cout << "Plant removed!" << endl;
+                }
+                else {
+                    cout << "Plant not found." << endl;
+                }
+
+                break;
+            }
+
+            case 6: 
+                cout << "Total plants: "
+                     << countPlants(head) << endl;
+                break;
+
+            case 7: {
+                PlantNode* current = head;
+                bool found = false;
+
+                while (current != nullptr) {
+                    if (plantNeedsWater(current->data)) {
+                        printPlant(current->data);
+                        cout << endl;
+                        found = true;
+                        }
+                        
+                    current = current->next;
+                }
+
+                if (!found) {
+                    cout << "No plants need water." << endl;
+                }
+
+                break;
+            }
+
+            case 8: {
+
+                PlantNode* plant = findMostOverduePlant(head);
+
+                if (plant != nullptr) {
+                    printPlant(plant->data);
+                }
+                else {
+                    cout << "No plants in the log." << endl;
+                }
+
+                break;
+            }
+
+            case 9:
+                if (savePlants("data/plants.txt", head)) {
+                    cout << "Plant log saved!" << endl;
+                }
+                else {
+                    cout << "Could not save file." << endl;
+                }
+
                 break;
 
             case 0:
-                cout << "Goodbye!" << endl;
+                cout << "Saving and exiting..." << endl;
+                savePlants("data/plants.txt", head);
                 break;
-
+            
             default:
-                cout << "Unexpected choice." << endl;
-                break;
+                cout << "Invalid choice." << endl;
         }
-
-    } while (choice != 0);
+    }
+    while (choice != 0);
+    
+    clearPlants(head);
 
     return 0;
 }
